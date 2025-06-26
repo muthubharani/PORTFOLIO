@@ -154,6 +154,14 @@ body {
     background: var(--secondary-color);
 }
 
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
 /* About Section */
 .about {
     padding: 5rem 10%;
@@ -176,6 +184,7 @@ h2 {
     flex-direction: column;
     align-items: center;
     gap: 3rem;
+    overflow: hidden; /* Prevent scrollbars during animation */
 }
 
 .about-image {
@@ -238,12 +247,11 @@ h2 {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .skill-card:hover {
-    transform: translateY(-5px);
+    animation: jump 0.4s ease-out;
 }
 
 .skill-card i {
@@ -568,18 +576,23 @@ footer {
 }
 
 .level-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    width: 100%;
+    background-color: var(--background); /* Darker background for the bar */
+    border-radius: 5px;
     overflow: hidden;
-    margin-bottom: 0.5rem;
+    height: 10px;
 }
 
 .level-fill {
     height: 100%;
-    background: var(--primary-color);
-    border-radius: 4px;
-    transition: width 0.3s ease;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    width: 0; /* Start at 0 width */
+    transition: width 1s ease-out; /* Animate the width change */
+}
+
+.level-fill.is-visible {
+    /* The width will be set by JS */
 }
 
 .language-level span {
@@ -708,17 +721,53 @@ footer {
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+/* Animation Setup */
+.animate {
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate.is-visible {
+    opacity: 1;
+    transform: none; /* Reset transform when visible */
+}
+
+.slide-in-from-left {
+    transform: translateX(-50px);
+}
+
+.slide-in-from-right {
+    transform: translateX(50px);
+}
+
+.slide-up {
+    transform: translateY(50px);
+}
+
+.fade-in-scale {
+    transform: scale(0.9);
+}
+
+.flip-in {
+    transform: perspective(1000px) rotateY(-90deg);
+    transform-origin: left;
+}
+
+/* Specific Animation Keyframes */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    50% {
+        transform: scale(1.05);
     }
 }
 
-.hero-content, .about-content, .skills-grid, .projects-grid, .contact-content, .certifications-grid, .languages-grid, .education-grid {
-    animation: fadeIn 1s ease-out;
+@keyframes jump {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 } 
